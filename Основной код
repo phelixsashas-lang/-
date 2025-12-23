@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Уроки зелёного мастерства</title>
+  <style>
+    /* Фон всей страницы с хаотичными кружками */
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #c0c0c0;
+      background-image: url("image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='15' r='17' fill='%23d81b60' opacity='0.2'/%3E%3Ccircle cx='45' cy='5' r='17' fill='%23d81b60' opacity='0.2'/%3E%3Ccircle cx='30' cy='50' r='17' fill='%23d81b60' opacity='0.2'/%3E%3Ccircle cx='55' cy='40' r='17' fill='%23d81b60' opacity='0.2'/%3E%3C/svg%3E");
+      border-left: 2px solid black;
+      border-right: 2px solid black;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: sans-serif;
+    }
+
+    /* Рамка для приветственного текста */
+    .welcome-box {
+      margin-top: 30px;
+      padding: 20px 30px;
+      background-color: #c0c0c0; /* серебристый фон внутри рамки */
+      border: 3px solid black;  /* чёткая рамка */
+      border-radius: 8px;
+      text-align: center;
+      max-width: 90%;
+    }
+
+    /* Зелёный текст */
+    .welcome-text {
+      font-size: 24px;
+      color: #2e7d32; /* тёмно-зелёный */
+      margin: 0;
+    }
+
+    /* Кнопка "Далее" */
+    .next-button {
+      margin-top: 25px;
+      padding: 10px 30px;
+      font-size: 18px;
+      background-color: #4caf50; /* зелёная кнопка */
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .next-button:hover {
+      background-color: #388e3c;
+    }
+
+    /* Картинки */
+    .images-row {
+      display: flex;
+      gap: 30px;
+      margin-top: 25px;
+    }
+
+    .circular-image {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #555;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Текст в рамке -->
+  <div class="welcome-box">
+    <p class="welcome-text">Добро пожаловать, на сайт-приложение Уроки зелёного мастерства</p>
+  </div>
+
+  <!-- Круглые картинки -->
+  <div class="images-row">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfHTFmVwZfUwN7Rnn68fhY_sgE7Xx-4tBerJ4NnAkGVg&s=10" alt="Растение 1" class="circular-image">
+    <img src="https://orchidea-shop.ru/base/data/7058mid.jpg" alt="Орхидея" class="circular-image">
+  </div>
+
+  <!-- Кнопка "Далее" -->
+  <button class="next-button">Далее</button>
+
+</body>
+</html>
