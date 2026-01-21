@@ -1,89 +1,311 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Уроки зелёного мастерства</title>
-  <style>
-    /* Фон всей страницы с хаотичными кружками */
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #c0c0c0;
-      background-image: url("image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='15' r='17' fill='%23d81b60' opacity='0.2'/%3E%3Ccircle cx='45' cy='5' r='17' fill='%23d81b60' opacity='0.2'/%3E%3Ccircle cx='30' cy='50' r='17' fill='%23d81b60' opacity='0.2'/%3E%3Ccircle cx='55' cy='40' r='17' fill='%23d81b60' opacity='0.2'/%3E%3C/svg%3E");
-      border-left: 2px solid black;
-      border-right: 2px solid black;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-family: sans-serif;
-    }
+    <meta charset="UTF-8">
+    <title>Уроки — Зелёное мастерство</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #e8f5e9; /* светло-зелёный фон */
+            background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='20' cy='20' r='12' fill='%234caf50' opacity='0.15'/%3E%3Ccircle cx='60' cy='10' r='15' fill='%234caf50' opacity='0.15'/%3E%3Ccircle cx='40' cy='60' r='18' fill='%234caf50' opacity='0.15'/%3E%3Ccircle cx='70' cy='50' r='10' fill='%234caf50' opacity='0.15'/%3E%3C/svg%3E");
+            min-height: 100vh;
+            font-family: sans-serif;
+            padding: 20px;
+        }
+        .header {
+            text-align: center; /* Центрирует содержимое */
+            margin-bottom: 20px;
+        }
+        .back-button {
+            background: #388e3c;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px; /* чтобы кнопка не прилипала к заголовку */
+        }
+        .back-button:hover {
+            background: #2e7d32;
+        }
+        /* Центрирование панели поиска и фильтра */
+        .search-filter-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+        }
+        .search-filter {
+            display: flex;
+            gap: 12px;
+            max-width: 500px;
+            width: 100%;
+        }
+        .search-filter input,
+        .search-filter select {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #999;
+            border-radius: 4px;
+            flex: 1;
+        }
 
-    /* Рамка для приветственного текста */
-    .welcome-box {
-      margin-top: 30px;
-      padding: 20px 30px;
-      background-color: #c0c0c0; /* серебристый фон внутри рамки */
-      border: 3px solid black;  /* чёткая рамка */
-      border-radius: 8px;
-      text-align: center;
-      max-width: 90%;
-    }
+        .cards-row {
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            margin-bottom: 25px; /* отступ между рядами */
+        }
+        .card {
+            width: 220px;
+            cursor: pointer;
+            text-align: center;
+        }
+        .card img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #4caf50;
+            transition: transform 0.2s;
+        }
+        .card img:hover {
+            transform: scale(1.05);
+        }
 
-    /* Зелёный текст */
-    .welcome-text {
-      font-size: 24px;
-      color: #2e7d32; /* тёмно-зелёный */
-      margin: 0;
-    }
-
-    /* Кнопка "Далее" */
-    .next-button {
-      margin-top: 25px;
-      padding: 10px 30px;
-      font-size: 18px;
-      background-color: #4caf50; /* зелёная кнопка */
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .next-button:hover {
-      background-color: #388e3c;
-    }
-
-    /* Картинки */
-    .images-row {
-      display: flex;
-      gap: 30px;
-      margin-top: 25px;
-    }
-
-    .circular-image {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #555;
-    }
-  </style>
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            max-width: 600px;
+            max-height: 80vh; /* Увеличена высота */
+            overflow-y: auto; /* Добавлена прокрутка */
+            text-align: center;
+        }
+        .close-btn {
+            margin-top: 15px;
+            padding: 6px 12px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
+    <div class="header">
+        <button class="back-button" onclick="window.history.back()">← Назад</button>
+        <h2>Уроки зелёного мастерства</h2>
+    </div>
 
-  <!-- Текст в рамке -->
-  <div class="welcome-box">
-    <p class="welcome-text">Добро пожаловать, на сайт-приложение Уроки зелёного мастерства</p>
-  </div>
+    <!-- Центрированная панель поиска и фильтра -->
+    <div class="search-filter-container">
+        <div class="search-filter">
+            <input type="text" id="searchInput" placeholder="Поиск по названию...">
+            <select id="filterSelect">
+                <option value="">Все категории</option>
+                <option value="orchid">Орхидеи</option>
+                <option value="succulent">Суккуленты</option>
+                <option value="herb">Травы</option>
+                <option value="cactus">Кактусы</option>
+                <option value="fruit">Фрукты</option>
+                <option value="vegetable">Овощи</option>
+                <option value="garden">Садовые культуры</option>
+                <option value="indoor">Комнатные растения</option>
+                <option value="mixed">Смешанные категории</option>
+                <option value="berry">Ягоды</option>
+                <option value="tree">Деревья</option>
+                <option value="root">Корнеплоды</option>
+                <option value="legume">Бобовые</option>
+                <option value="citrus">Цитрусовые</option>
+                <option value="grass">Травы / Злаки</option>
+                <option value="medicinal">Лекарственные растения</option>
+                <option value="aromatic">Ароматические растения</option>
+            </select>
+        </div>
+    </div>
 
-  <!-- Круглые картинки -->
-  <div class="images-row">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfHTFmVwZfUwN7Rnn68fhY_sgE7Xx-4tBerJ4NnAkGVg&s=10" alt="Растение 1" class="circular-image">
-    <img src="https://orchidea-shop.ru/base/data/7058mid.jpg" alt="Орхидея" class="circular-image">
-  </div>
+    <!-- Первый ряд (до 5 карточек) -->
+    <div class="cards-row">
+        <div class="card" onclick="showInfo('Орхидея', 'Орхидея – это одно из самых красивых и разнообразных семейств цветковых растений, насчитывающее более 25 000 видов. Произрастает преимущественно в тропических и субтропических регионах. Эти экзотические растения ценятся за их уникальные, часто яркие и причудливые цветы, которые могут цвести несколько месяцев подряд. Для успешного выращивания орхидей необходимо создать условия, максимально приближенные к их естественной среде обитания. Им требуется яркий, но рассеянный свет, высокая влажность воздуха (около 50-70%) и регулярный, но умеренный полив. Поливать орхидею нужно только тогда, когда субстрат полностью просохнет. Используется специальный субстрат, состоящий из коры, мха сфагнума и других воздухопроницаемых компонентов. Регулярная подкормка удобрениями для орхидей способствует здоровому росту и обильному цветению. Важно обеспечить хорошую циркуляцию воздуха вокруг растения, но избегать сквозняков. Орхидеи предпочитают стабильную температуру, с небольшим перепадом между дневной и ночной. Основное применение орхидей – декоративное, украшение интерьеров, создание цветочных композиций. Некоторые виды используются в парфюмерии и косметологии. Выращивание орхидей – это увлекательное занятие, требующее терпения и наблюдательности, но результат – великолепное цветение – стоит всех усилий. Они идеально подходят для опытных цветоводов и тех, кто хочет научиться уходу за капризными растениями.')">
+            <img src="https://orchidea-shop.ru/base/data/7058mid.jpg" alt="орхидея">
+            <p>Орхидея</p>
+        </div>
+        <div class="card" onclick="showInfo('Алоэ', 'Алоэ – суккулентное растение, известное своими целебными свойствами. Наиболее распространённым видом является алоэ древовидное (Aloe vera). Это растение имеет мясистые, сочные листья, содержащие гель, богатый витаминами, минералами и аминокислотами. Гель алоэ используется в народной медицине, косметологии и фармацевтике для лечения ожогов, порезов, воспалений кожи, проблем с пищеварением. Алоэ неприхотливо в уходе. Оно предпочитает яркий свет и может выдерживать прямые солнечные лучи. Поливать нужно редко, только после полного высыхания почвы, чтобы избежать загнивания корней. Растение хорошо растёт в хорошо дренированной почве. Алоэ можно выращивать как в горшках дома, так и в саду (в тёплом климате). Это отличный выбор для начинающих садоводов и для создания коллекции лекарственных растений. Алоэ также способно очищать воздух в помещении от некоторых вредных веществ. Растение размножается боковыми отростками или семенами. Важно не переувлажнять и не подкармливать слишком часто, алоэ лучше переносит засуху, чем избыток влаги.')">
+            <img src="https://cdn.profile.ru/wp-content/uploads/2022/01/Aloe.jpg" alt="алоэ">
+            <p>Алоэ</p>
+        </div>
+        <div class="card" onclick="showInfo('Розмарин', 'Розмарин – вечнозелёный кустарник с ароматными игловидными листьями. Это популярная пряность, широко используемая в кулинарии, особенно в средиземноморской. Также розмарин применяется в народной медицине благодаря своим антиоксидантным и противовоспалительным свойствам. Он улучшает кровообращение, может стимулировать память и концентрацию. Для выращивания розмарина выбирают солнечное место. Растение светолюбиво и теплолюбиво, предпочитает хорошо дренированную, слегка щелочную почву. Полив должен быть умеренным, розмарин не переносит застоя воды, но не любит сильной засухи. Его можно выращивать в саду (в тёплом климате), в контейнерах на балконе или подоконнике. Розмарин морозоустойчив, но в суровых зимах нуждается в укрытии. Он медонос и привлекает полезных насекомых. Розмарин легко размножается черенками или семенами. Регулярная обрезка помогает сохранить форму куста и стимулирует рост новых побегов. Свежие или сушёные листья добавляют в мясные блюда, соусы, хлеб, маринады. Розмарин также используется для ароматизации масла и соли.')">
+            <img src="https://tomatipomidori.ru/images/detailed/9/rozmarin-rosinka-ovoschnoy.jpg" alt="розмарин">
+            <p>Розмарин</p>
+        </div>
+        <div class="card" onclick="showInfo('Кактус', 'Кактусы – это группа суккулентных растений, адаптированных к жизни в засушливых условиях. Они характеризуются мясистыми стеблями, способными накапливать воду, и колючками вместо листьев. Кактусы бывают самых разных форм и размеров, от маленьких шаровидных до огромных столбчатых. Многие виды кактусов цветут, иногда очень ярко и эффектно. Кактусы – одни из самых неприхотливых комнатных растений. Им требуется много света, желательно прямого солнечного. Полив крайне редкий, особенно зимой, когда почти не требуется. Почва должна быть песчаной, легкой и хорошо дренированной. Перед поливом важно убедиться, что земляной ком полностью просох. Кактусы не нуждаются в частой пересадке и подкормке. Они идеально подходят для начинающих цветоводов, людей с плотным графиком и для создания суккулентных композиций. Кактусы могут жить многие годы и даже передаваться по наследству. Некоторые виды используются в ландшафтном дизайне засушливых регионов. При правильном уходе кактусы радуют владельцев цветением и не требуют особого внимания.')">
+            <img src="https://cdn.profile.ru/wp-content/uploads/2021/09/cvetushhij-kaktus-doma-cvetok.jpg" alt="кактус">
+            <p>Кактус</p>
+        </div>
+        <div class="card" onclick="showInfo('Манго', 'Манго – тропический фрукт, получаемый с вечнозелёного дерева Mangifera indica. Этот фрукт славится своим сладким, сочным вкусом и ароматом. Манго богат витаминами A и C, а также другими питательными веществами. Оно используется в свежем виде, в десертах, соках, смузи, салатах. В тропических странах манго выращивают на плантациях. Для выращивания дерева манго в домашних условиях потребуется большое пространство, тёплый и влажный климат, яркий свет и регулярный полив. Растение не переносит заморозков. Молодые деревца нуждаются в защите от солнца. Почва должна быть плодородной и хорошо дренированной. Подкормка важна для здорового роста и плодоношения. Выращивание манго из косточки возможно, но плодоносить такое дерево будет нескоро. Манго можно выращивать в больших кадках, но в любом случае ему нужна теплица или тёплое помещение в прохладном климате. Это растение требует времени и терпения, но при благоприятных условиях может принести вкуснейшие плоды. Манго символизирует тропики и экзотику.')">
+            <img src="https://agrarian-blog.ru/wp-content/uploads/2017/03/mango-v-gorshke.jpg" alt="манго">
+            <p>Манго</p>
+        </div>
+    </div>
 
-  <!-- Кнопка "Далее" -->
-  <button class="next-button">Далее</button>
+    <!-- Второй ряд (остальные карточки) -->
+    <div class="cards-row">
+        <div class="card" onclick="showInfo('Помидор', 'Помидор – популярный овощ (ботанически плод ягодного типа), один из самых распространённых продуктов на планете. Считается родом из Южной Америки. Помидоры бывают разных сортов: красные, жёлтые, оранжевые, чёрные, продолговатые, сердцевидные и т.д. Они богаты ликопином, витаминами и минералами. Помидоры употребляют в свежем виде, используют в салатах, соусах, супах, консервируют. Для выращивания помидоров необходим свет, тепло и умеренный, но регулярный полив. Растения нуждаются в подвязке к опоре, чтобы не ломались под тяжестью плодов. Их выращивают рассадным способом в открытом грунте или в теплицах. Важно следить за проветриванием, чтобы предотвратить болезни. Помидоры чувствительны к холоду и избытку влаги. Подкормки фосфором и калием способствуют лучшему плодоношению. Сбор урожая производят по мере созревания. Помидоры – универсальный продукт, без которого трудно представить современную кухню. Они могут быть основой для множества блюд и соусов. Выращивание помидоров – увлекательный процесс, позволяющий получить свежие и полезные плоды на своём участке.')">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMWFRUXGBgbGBgXGBoYGBgYGBUYGBodHRcYHSggGB0lGxcYITEhJSkrLi4uGB8zODMtNygtLisBCgoKDg0OGxAQGy0lICYtMi0yKy81LS0vLS0tLS0tLy8tLS0tLS0tMC0tLS0tLy0tLS0tLS0tLS0tLS0tLS0tLf/AABEIALcBEwMBIgACEQEDEQH/xAAcAAACAwEBAQEAAAAAAAAAAAAFBgMEBwACAQj/xABCEAACAAQEBAQDBQYEBgIDAAABAgADBBEFEiExBkFRYRMicYEykbEHQlKhwRQjYtHh8DNygpIVFqKywvGT0iRDY//EABoBAAMBAQEBAAAAAAAAAAAAAAIDBAEFAAb/xAAwEQACAQMDAwIEBgIDAAAAAAABAgADESEEEjETQVEiYQUycfCBkaGx0eEUwTNS8f/aAAwDAQACEQMRAD8AbPs1p18J3t581r9rX0iLEMcWRXZKbJYj98hOWW8zfytsk23PYnQ6xdxLAmppbzaS5spzymN1cAHa+xHTnGHy8UZjp9BHMXqUqYS2R38xTHaLTVJPDVDPYPInELNch5b6ssw5iNCc3xA63N76GDFVVfs1K9HMQ3yOksi5Vka+t+1/yhN4QxGXUPKDs0uokramYICGJNwsz8a8raaMdb6xpGG4lIrleU2UTZZKzZYa5RtiVPNe/sdY8lmJ2Yb9DNWx4ih9oGKXkyJCbJLlO3QlgQunYAn3HSFWTRy2Xxm8umw0GbrbvF04E8yoqQ7skiSreM9rkCXcKFvuxsLDoYX6Fj5QT7dBEep3ElopznIlyrkZlYbHcHlFComCWgCNcncEe1weW+0EMVqwqkczoLRTwkqk1HnC4v7DpeB04IXPeZYd4W4X4Jm1K+JNJSVyA3b0HId4f8Iw5aU5ZcqwPO3mPqecF8GxFGVbW25QVeoTtHSGmDrzmMuBxM3+0WTMklJieUTTqQbG69+UA8LxebMltIds6N+MZiLcwTD/IpGZE62O/5i0Cq/BrHOosL6jp3hbqaWe0MHdDOESjOk3awci3cj9I9UeBeGfM7EfdBNwP5wDw3FvBcqxsrDfpDKlcEUE+a63FiNR2+UbQFM5tmYVM6fQTUQsraQNNqa7NqTnHINInElD4csumg5X6wDw3FvBcqxsrDfpDKlcEUE+a63FiNR2+UbQFM5tmYVM6fQTUQsraQNNqa7NqTnHINInElD4csumg5X6wDw3FvBcqxsrDfpDKlcEUE+a63FiNR2+UbQFM5tmYVM6fQTUQsraQNNqa7NqTnHINInElD4csumg5X6wDw3FvBcqxsrDfpDKlcEUE+a63FiNR2+UbQFM5tmYVM6fQTUQsraQNNqa7NqTnHINInElD4csumg5X6wDw3FvBcqxsrDfpDKlcEUE+a63FiNR2+UbQFM5tmYVM6fQTUQsraQNNqa7NqTnHINInElD4csumg5X6wDw3FvBcqxsrDfpDKlcEUE+a63FiNR2+UbQFM5tmYVM6fQTUQsraQNNqa7NqTnHINInElD4csumg5X6wDw3FvBcqxsrDfpDKlcEUE+a63FiNR2+UbQFM5tmYVM6fQTUQsraQNNqa7NqTnHINInElD4csumg5X6wDw3FvBcqxsrDfpDKlcEUE+a63FiNR2+UbQFM5tmYVM6fQTUQsraQNNqa7NqTnHINInElD4csumg5X6wDw3FvBcqxsrDfpDKlcEUE+a63FiNR2+UbQFM5tmYVM6fQTUQsraQNNqa7NqTnHINInElD4csumg5X6wDw3......(длинная строка base64)...">
+            <p>Помидор</p>
+        </div>
+        <div class="card" onclick="showInfo('Лук', 'Лук – одна из самых распространённых овощных культур. Известно множество видов лука: репчатый, зелёный (перо), порей, шалот, лук-слизун и др. Лук ценится за свой характерный вкус и аромат, а также за высокую питательную ценность и содержание фитонцидов, витаминов и минералов. Он используется в кулинарии повсеместно. Лук репчатый – наиболее распространённый вид. Он бывает белым, жёлтым, красным. Лук выращивают в открытом грунте. Для посадки используют севок (маленькие луковицы) или семена. Растение светолюбиво, предпочитает плодородные, хорошо дренированные почвы. Полив нужен умеренный, особенно в период формирования луковиц. Лук не любит переувлажнения и застоя воды. Важно правильно выбрать время посадки: весной или осенью, в зависимости от сорта. Сбор урожая производят, когда перья пожелтели и начали ложиться. Лук нуждается в правильном хранении в сухом, прохладном месте. Он используется в свежем виде, в приготовлении супов, гарниров, салатов, соусов. Лук обладает антисептическими и противовоспалительными свойствами. Он может использоваться в народной медицине. Лук – неприхотливое растение, подходящее для начинающих огородников. Выращивание лука позволяет обеспечить себя свежими овощами круглый год. Он играет важную роль в рационе питания.')">
+            <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMTEhUTExMWFRUXGBgbGBgXGBoYGBgYGBUYGBodHRcYHSggGB0lGxcYITEhJSkrLi4uGB8zODMtNygtLisBCgoKDg0OGxAQGy0lICYtMi0yKy81LS0vLS0tLS0tLy8tLS0tLS0tMC0tLS0tLy0tLS0tLS0tLS0tLS0tLS0tLf/AABEIALcBEwMBIgACEQEDEQH/xAAcAAACAwEBAQEAAAAAAAAAAAAFBgMEBwACAQj/xABCEAACAAQEBAQDBQYEBgIDAAABAgADBBEFEiExBkFRYRMicYEykbEHQlKhwRQjYtHh8DNygpIVFqKywvGT0iRDY//EABoBAAMBAQEBAAAAAAAAAAAAAAIDBAEFAAb/xAAwEQACAQMDAwIEBgIDAAAAAAABAgADESEEEjETQVEiYQUycfCBkaGx0eEUwTNS8f/aAAwDAQACEQMRAD8AbPs1p18J3t581r9rX0iLEMcWRXZKbJYj98hOWW8zfytsk23PYnQ6xdxLAmppbzaS5spzymN1cAHa+xHTnGHy8UZjp9BHMXqUqYS2R38xTHaLTVJPDVDPYPInELNch5b6ssw5iNCc3xA63N76GDFVVfs1K9HMQ3yOksi5Vka+t+1/yhN4QxGXUPKDs0uokramYICGJNwsz8a8raaMdb6xpGG4lIrleU2UTZZKzZYa5RtiVPNe/sdY8lmJ2Yb9DNWx4ih9oGKXkyJCbJLlO3QlgQunYAn3HSFWTRy2Xxm8umw0GbrbvF04E8yoqQ7skiSreM9rkCXcKFvuxsLDoYX6Fj5QT7dBEep3ElopznIlyrkZlYbHcHlFComCWgCNcncEe1weW+0EMVqwqkczoLRTwkqk1HnC4v7DpeB04IXPeZYd4W4X4Jm1K+JNJSVyA3b0HId4f8Iw5aU5ZcqwPO3mPqecF8GxFGVbW25QVeoTtHSGmDrzmMuBxM3+0WTMklJieUTTqQbG69+UA8LxebMltIds6N+MZiLcwTD/IpGZE62O/5i0Cq/BrHOosL6jp3hbqaWe0MHdDOESjOk3awci3cj9I9UeBeGfM7EfdBNwP5wDw3FvBcqxsrDfpDKlcEUE+a63FiNR2+UbQFM5tmYVM6fQTUQsraQNNqa7NqTnHINInElD4csumg5X6wDw3FvBcqxsrDfpDKlcEUE+a63FiNR2+UbQFM5tmYVM6fQTUQsraQNNqa7NqTnHINInElD4csumg5X6wDw3FvBcqxsrDfpDKlcEUE+a63FiNR2+UbQFM5tmYVM6fQTUQsraQNNqa7NqTnHINInElD4csumg5X6wDw3FvBcqxsrDfpDKlcEUE+a63FiNR2+UbQFM5tmYVM6fQTUQsraQNNqa7NqTnHINInElD4csumg5X6wDw3FvBcqxsrDfpDKlcEUE+a63FiNR2+UbQFM5tmYVM6fQTUQsraQNNqa7NqTnHINInElD4csumg5X6wDw3FvBcqxsrDfpDKlcEUE+a63FiNR2+UbQFM5tmYVM6fQTUQsraQNNqa7NqTnHINInElD4csumg5X6wDw3FvBcqxsrDfpDKlcEUE+a63FiNR2+UbQFM5tmYVM6fQTUQsraQNNqa7NqTnHINInElD4csumg5X6wDw3FvBcqxsrDfpDKlcEUE+a63FiNR2+UbQFM5tmYVM6fQTUQsraQNNqa7NqTnHINInElD4csumg5X6wDw3FvBcqxsrDfpDKlcEUE+a63FiNR2+UbQFM5tmYVM6fQTUQsraQNNqa7NqTnHINInElD4csumg5X6wDw3......(длинная строка base64)...">
+            <p>Лук</p>
+        </div>
+        <div class="card" onclick="showInfo('Перец', 'Перец – популярный овощ, который может быть как сладким, так и острым. Сладкий болгарский перец – крупноплодный, сочный, с мясистой мякотью. Острые перцы – это разные виды Capsicum, содержащие капсаицин, который вызывает ощущение жжения. Перец богат витамином C, каротином и другими полезными веществами. Он используется в кулинарии в свежем виде, в приготовлении салатов, гарниров, фаршировке, мариновании, сушке. Перец выращивают рассадным способом в открытом грунте или в теплицах. Растение светолюбиво, теплолюбиво, требует плодородной, хорошо дренированной почвы. Полив должен быть регулярным и умеренным, без пересыхания и застоя воды. Перец нуждается в подкормках, особенно фосфором и калием. Растения могут нуждаться в подвязке. Сбор урожая зависит от сорта: сладкий перец собирают в технической спелости (зелёный) или биологической (красный, жёлтый и т.д.). Острые перцы собирают по мере готовности. Перец может храниться некоторое время в холодильнике. Он играет важную роль в питании, придаёт блюдам вкус, цвет и аромат. Некоторые виды перца обладают полезными свойствами, стимулируя обмен веществ. Выращивание перца – популярное занятие на дачных участках.')">
+            <img src="data:image/jpeg;base64,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" alt="перец">
+            <p>Перец Болгарский</p>
+        </div>
+        <div class="card" onclick="showInfo('Череда', 'Череда (Bidens tripartita) – однолетнее травянистое растение из семейства Астровые (Сложноцветные). Известна также как чернобыльник, вороний глаз, бедренец. Растёт по берегам водоёмов, на сырых лугах, в заболоченных местах. Череда обладает множеством лекарственных свойств и широко используется в народной медицине. Она обладает противовоспалительным, ранозаживляющим, желчегонным, мочегонным и потогонным действием. Применяется при заболеваниях кожи (экзема, дерматиты), желудочно-кишечного тракта, печени, почек, при простудных заболеваниях. Для выращивания череды выбирают солнечные места с влажной, плодородной почвой. Семена высевают весной в открытый грунт. Растение неприхотливо, быстро растёт. Полив должен быть регулярным. Череда может достигать высоты 30-100 см. Листья перисто-рассечённые, мелкие жёлтые цветки собраны в соцветия. Сбор сырья проводят во время цветения, верхушки с цветками. Сушат в тени, на чердаках или в сушилках при температуре не выше 40°C. Сушеная череда хранится в бумажных пакетах или тканевых мешочках. Из череды готовят отвары, настои, настойки, примочки. В кулинарии череда практически не используется. Однако её ценность как лекарственного растения огромна. Череда – пример универсального лекарственного растения, которое можно выращивать в саду или собирать в дикой природе. Важно правильно идентифицировать растение перед использованием.')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Bidens_tripartita_002.JPG/800px-Bidens_tripartita_002.JPG" alt="череда">
+            <p>Череда</p>
+        </div>
+        <div class="card" onclick="showInfo('Малина', 'Малина (Rubus idaeus) – кустарник, дающий ароматные, сочные, красные ягоды. Является одной из самых любимых ягод в России. Малина богата витаминами C, P, B1, B2, фолиевой кислотой, железом, калием, магнием и другими полезными веществами. Ягоды обладают противовоспалительным, потогонным и жаропонижающим действием, часто используются при простуде. Ягоды едят свежими, готовят варенье, джемы, компоты, соки, морсы, добавляют в десерты. Малину выращивают на приусадебных участках. Растение светолюбиво, предпочитает плодородные, хорошо дренированные, слегка кислые или нейтральные почвы. Посадку проводят весной или осенью. Растения нуждаются в регулярном поливе, особенно в засушливые периоды. Важна обрезка: удаляют старые, больные и слабые побеги. Малина требует подкормок, особенно органических. Растение может болеть и подвергаться нападению вредителей, поэтому необходим уход. Ягоды собирают в сухую погоду, когда они полностью созреют. Малина может расти на одном месте до 10-15 лет. Это ценная культура для получения витаминов и вкусных ягод. Малина – символ лета и уюта дачного участка. Существуют ремонтантные сорта, плодоносящие дважды за сезон.')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Raspberry_in_Sikkim.jpg/800px-Raspberry_in_Sikkim.jpg" alt="ягода">
+            <p>Малина</p>
+        </div>
+        <div class="card" onclick="showInfo('Вишня', 'Вишня (Prunus cerasus) – плодовое дерево или кустарник, дающее кисло-сладкие, красные или тёмно-красные плоды. Вишня богата витаминами (A, C, E, группы B), минералами (железо, калий, магний), органическими кислотами, пектинами. Ягоды обладают мочегонным, желчегонным, противовоспалительным действием. Используются в свежем виде, для приготовления варенья, джемов, компотов, соков, в выпечке, кондитерских изделиях. Вишня требовательна к освещению, предпочитает солнечные места. Растение предпочитает плодородные, хорошо дренированные, воздухопроницаемые почвы. Посадка осуществляется весной или осенью. Необходим регулярный полив, особенно в период завязывания и созревания плодов. Обрезка важна для формирования кроны и удаления больных ветвей. Вишня нуждается в подкормках. Растение может страдать от болезней (коккомикоз, монилиоз) и вредителей. Сбор урожая производится вручную по мере созревания. Вишня – ценная плодовая культура, подходящая для средней полосы России. Она украшает сад и приносит полезные плоды. Вишня может служить опылителем для других косточковых культур. Существует множество сортов вишни с разными характеристиками плодов и устойчивости к погоде и болезням. Важно выбирать сорта, адаптированные к конкретному региону.')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Cherry_blossoms_and_fruit.jpg/800px-Cherry_blossoms_and_fruit.jpg" alt="ягода">
+            <p>Вишня</p>
+        </div>
+        <div class="card" onclick="showInfo('Клубника', 'Клубника (Fragaria x ananassa) – многолетнее травянистое растение, дающее ароматные, сладкие, красные ягоды. Является культурной формой дикой земляники. Клубника богата витаминами C, фолиевой кислотой, калием, магнием, клетчаткой, антиоксидантами. Ягоды полезны для сердечно-сосудистой системы, иммунитета, пищеварения. Используются в свежем виде, для приготовления десертов, варенья, соков, смузи. Клубнику выращивают на грядках, в контейнерах, на агротехнических лентах. Растение светолюбиво, предпочитает плодородные, хорошо дренированные, слегка кислые или нейтральные почвы. Посадку проводят весной или летом. Важны регулярный полив, особенно в засуху, и мульчирование. Клубника образует усы, которыми размножается. Необходима обрезка старых листьев и цветоносов. Растение может болеть и страдать от вредителей. Сбор урожая производят по мере созревания. Клубника – популярная культура для садоводов-любителей. Она может расти на одном месте 3-4 года. Существует множество сортов клубники: ремонтантные (плодоносят весь сезон), обычные (плодоносят раз в сезон), крупноплодные, мелкоплодные. Клубника – украшение сада и источник витаминов.')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Strawberry_%28Fragaria_%C3%97_ananassa%29_cultivated_in_the_backyard_plantation_in_Tokyo%2C_Japan.jpg/800px-Strawberry_%28Fragaria_%C3%97_ananassa%29_cultivated_in_the_backyard_plantation_in_Tokyo%2C_Japan.jpg" alt="ягода">
+            <p>Клубника</p>
+        </div>
+        <div class="card" onclick="showInfo('Картофель', 'Картофель (Solanum tuberosum) – важнейшая продовольственная культура, клубнеплод, богатый крахмалом, витамином C, калием и другими веществами. Родом из Южной Америки. В настоящее время является одним из основных продуктов питания во многих странах мира. Картофель используется в кулинарии в огромном количестве блюд: отварной, жареный, печеный, в супах, гарнирах, чипсах, крекерах. Для выращивания картофеля выбирают солнечные места с плодородной, рыхлой, хорошо дренированной почвой. Посадку проводят весной, когда минует угроза заморозков. Используются клубни-семена (непроросшие или пророщенные). Растения нуждаются в регулярном поливе, особенно в период формирования клубней, рыхлении, окучивании (чтобы защитить клубни от солнца и повысить урожайность). Важна подкормка. Картофель может страдать от болезней (фитофтора, парша, рак) и вредителей (колорадский жук). Сбор урожая производят после пожелтения ботвы. Картофель требует правильного хранения в прохладном, темном, сухом месте. Это основная культура в рационе питания. Картофель – основа крестьянского хозяйства и символ сытости.')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Solanum_tuberosum_01_by_line1.jpg/800px-Solanum_tuberosum_01_by_line1.jpg" alt="корнеплод">
+            <p>Картофель</p>
+        </div>
+        <div class="card" onclick="showInfo('Помело', 'Помело (Citrus maxima) – крупный цитрусовый фрукт, родом из Юго-Восточной Азии. Внешне похож на грейпфрут, но крупнее и с более толстой кожурой. Мякоть может быть белой, розовой или красной, сочная, сладкая или слегка горьковатая, с хрупкими перегородками. Помело богат витамином C, клетчаткой, калием, фолиевой кислотой. Он считается диетическим продуктом, помогает контролировать уровень сахара в крови и поддерживать здоровье сердца. Помело едят свежим, добавляют в салаты, используют в азиатской кухне. Для выращивания помело требуется тёплый, влажный климат, много солнца. Растение – вечнозелёное дерево, может достигать значительных размеров. Почва должна быть плодородной, хорошо дренированной. Регулярный полив и подкормка необходимы. Дерево может плодоносить круглый год, но основной урожай приходится на зиму и весну. Помело может выращиваться в комнатных условиях (в горшке) при условии обеспечения достаточного тепла, света и влажности, но плодоношение в домашних условиях затруднительно. Плоды хранятся долго. Помело – экзотический фрукт, символизирующий здоровье и долголетие в некоторых культурах. Он используется в традиционной медицине Азии.')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Pummelo_%28Citrus_maxima%29_on_tree.jpg/800px-Pummelo_%28Citrus_maxima%29_on_tree.jpg" alt="цитрус">
+            <p>Помело</p>
+        </div>
+        <div class="card" onclick="showInfo('Фасоль', 'Фасоль (Phaseolus vulgaris) – однолетнее бобовое растение, ценное как источник белка, клетчатки, витаминов (B1, B6, фолиевая кислота), минералов (железо, магний, калий). Существует множество видов: стручковая (зелёная), спаржевая, обыкновенная (красная, белая, чёрная и др.). Фасоль используется в кулинарии варёной, тушёной, в салатах, супах, гарнирах, вторых блюдах, консервированной. Для выращивания фасоли выбирают солнечные места с плодородной, хорошо дренированной почвой. Посадку проводят после установления устойчивой тёплой погоды. Семена высевают в грунт. Фасоль бывает кустовая и вьющаяся (нуждается в опоре). Растения нуждаются в умеренном поливе, рыхлении. Фасоль обогащает почву азотом. Может подвергаться нападению вредителей (долгоносщик, тля). Сбор урожая зависит от вида: стручки зелёной фасоли собирают молодыми, зрелые бобы – после полного созревания. Фасоль требует правильной подготовки перед употреблением (замачивание, варка), особенно зрелые бобы. Фасоль – важный компонент вегетарианских и здоровых диет. Это питательная и универсальная культура.')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Phaseolus_vulgaris_L._green_beans.jpg/800px-Phaseolus_vulgaris_L._green_beans.jpg" alt="бобовые">
+            <p>Фасоль</p>
+        </div>
+        <div class="card" onclick="showInfo('Базилик', 'Базилик (Ocimum basilicum) – ароматическая трава с блестящими, мягкими листьями и характерным насыщенным, сладковато-пряным запахом. Считается родом из Индии. Базилик широко используется в кулинарии, особенно в итальянской, тайской, индонезийской и других кухнях. Он добавляется в салаты, соусы (например, песто), супы, пиццу, макароны, мясные и рыбные блюда. Базилик обладает антиоксидантными и противовоспалительными свойствами. Для выращивания базилика выбирают солнечные места с плодородной, хорошо дренированной почвой. Растение теплолюбиво, не переносит заморозков. Посадку проводят весной. Семена можно сеять сразу в грунт или через рассаду. Регулярный полив и рыхление необходимы. Важно своевременно срывать цветочные стрелки, чтобы листья оставались мягкими и ароматными. Базилик можно выращивать в горшках на подоконнике. Свежие листья добавляют в конце приготовления блюд, чтобы сохранить аромат. Сушеный базилик менее ароматен. Базилик – важная ароматическая культура, придающая блюдам особый вкус и аромат. Он популярен как в саду, так и в домашнем хозяйстве.')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Basil_leaves_and_flower.jpg/800px-Basil_leaves_and_flower.jpg" alt="трава">
+            <p>Базилик</p>
+        </div>
+        <div class="card" onclick="showInfo('Петрушка', 'Петрушка (Petroselinum crispum) – двулетняя ароматическая зелень и корнеплод. Используется как пряность в кулинарии по всему миру. Листья петрушки богаты витаминами C, K, A, фолиевой кислотой, железом, калием. Корень петрушки также съедобен и используется как овощ. Петрушка обладает мочегонным, желчегонным действием, улучшает пищеварение, укрепляет иммунитет. В кулинарии используются как свежие, так и сушёные листья, а также корень. Петрушку добавляют в супы, салаты, соусы, гарниры, мясные и рыбные блюда. Для выращивания петрушки подходят солнечные и полутенистые места с плодородной, влажной, рыхлой почвой. Посев семян производят весной или под зиму. Петрушка холодостойка. Регулярный полив и прополка важны. Сбор зелени осуществляется по мере необходимости. Корень выкапывают осенью. Петрушку можно выращивать в контейнерах. Семена петрушки всходят медленно. Петрушка – универсальная зелень и корнеплод, незаменимая в кулинарии и народной медицине. Она легко выращивается и хранится.')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Petroselinum_crispum_%28parsley%29_002.JPG/800px-Petroselinum_crispum_%28parsley%29_002.JPG" alt="трава">
+            <p>Петрушка</p>
+        </div>
+        <div class="card" onclick="showInfo('Мята', 'Мята (Mentha spicata) – многолетнее травянистое растение с ароматными листьями и характерным ментоловым вкусом и запахом. Существует множество видов мяты (перечная, колосистая, яблочная и др.). Мята широко используется как пряность, в народной медицине, косметике, парфюмерии. Она обладает успокаивающим, спазмолитическим, противовоспалительным, антисептическим действием. Мяту добавляют в чай, напитки, десерты, соусы, салаты. Мятный чай помогает при простуде, стрессе, расстройствах пищеварения. Для выращивания мяты выбирают солнечные или полутенистые места с влажной, плодородной почвой. Растение неприхотливо, но может быстро разрастаться и вытеснять другие культуры. Посев семян или деление куста. Регулярный полив и прополка. Сбор листьев проводят во время цветения. Мяту можно сушить и хранить. Мята легко переносится в домашние условия. Важно ограничивать рост мяты в саду. Мята – универсальная ароматическая и лекарственная культура с широким спектром применения.')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Mint_-_Mentha_spicata_%285106718935%29.jpg/800px-Mint_-_Mentha_spicata_%285106718935%29.jpg" alt="трава">
+            <p>Мята</p>
+        </div>
+        <div class="card" onclick="showInfo('Чеснок', 'Чеснок (Allium sativum) – многолетнее растение, луковичный овощ, близкий родственник лука репчатого. Известен своими мощными вкусовыми качествами и целебными свойствами. Чеснок богат аллицином, витаминами C, B6, селеном, марганцем. Он обладает антимикробным, противогрибковым, антиоксидантным, иммуностимулирующим действием. Чеснок используется в кулинарии повсеместно: свежий, сушеный, жареный, в маринадах, приправах. Для выращивания чеснока выбирают солнечные места с плодородной, хорошо дренированной почвой. Посев производят зубчиками (севок) осенью или весной. Растение нуждается в умеренном поливе, регулярном рыхлении, прополке. Важно своевременно убирать стрелки у ярового чеснока. Сбор урожая производят, когда листья начнут желтеть. Чеснок требует сухого, прохладного места для хранения. Чеснок – важный компонент здорового питания. Он может использоваться в народной медицине. Чеснок – универсальная и полезная культура, доступная каждому огороднику. Существуют зимние и яровые сорта чеснока.')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Garlic_%28Allium_sativum%29_with_bulbs.jpg/800px-Garlic_%28Allium_sativum%29_with_bulbs.jpg" alt="луковичные">
+            <p>Чеснок</p>
+        </div>
+        <div class="card" onclick="showInfo('Огурец', 'Огурец (Cucumis sativus) – однолетнее вьющееся растение, плод которого является популярным овощем. Огурцы сочные, хрустящие, с высоким содержанием воды, витаминов (K, C, группы B) и минералов (калий, магний). Они используются в свежем виде, в салатах, супах, для засолки и консервации. Огурцы обладают мочегонным действием. Для выращивания огурцов выбирают солнечные, защищённые от ветра места с плодородной, хорошо дренированной, слегка кислой или нейтральной почвой. Посадку проводят рассадой или семенами в тёплую погоду. Растения нуждаются в регулярном и обильном поливе, подкормках, формировании (прищипывании, подвязывании). Огурцы могут расти на грядках или в теплицах. Важно бороться с болезнями (мучнистая роса, пероноспороз) и вредителями. Сбор урожая производят регулярно, пока плоды молодые и хрустящие. Огурцы быстро портятся, но хорошо хранятся в холодильнике. Это основной компонент салатов и консервации. Огурцы – важная культура для получения свежих овощей. Существуют сорта для открытого и закрытого грунта, самоопыляемые и требующие опыления.')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Cucumber_and_cross_section_edit.jpg/800px-Cucumber_and_cross_section_edit.jpg" alt="овощ">
+            <p>Огурец</p>
+        </div>
+        <div class="card" onclick="showInfo('Капуста', 'Капуста (Brassica oleracea var. capitata) – двулетняя овощная культура, образующая плотные кочаны. Существует множество видов капусты: белокочанная, цветная, брокколи, кольраби, савойская, пекинская и др. Капуста богата витаминами C, K, фолиевой кислотой, клетчаткой, железом. Она полезна для пищеварения, иммунитета. Капусту едят свежей (в салатах), тушёной, квашеной, отварной, используют в супах, пирогах, голубцах. Для выращивания капусты выбирают солнечные места с плодородной, влажной, слегка кислой или нейтральной почвой. Посадку проводят рассадой. Растения нуждаются в регулярном поливе, рыхлении, прополке, окучивании. Капуста чувствительна к недостатку влаги и может трескаться. Важно бороться с вредителями (капустная моль, кила). Сбор урожая зависит от сорта. Капусту можно хранить в погребе. Квашеная капуста – важный источник витамина C зимой. Капуста – универсальная и питательная культура. Существуют сорта для разных сроков созревания и способов использования.')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Cabbage_head.jpg/800px-Cabbage_head.jpg" alt="овощ">
+            <p>Капуста</p>
+        </div>
+    </div>
 
+    <!-- Модальное окно -->
+    <div id="modal" class="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h3 id="modal-title">Название</h3>
+            <p id="modal-text">Описание...</p>
+            <button class="close-btn" onclick="closeModal()">Закрыть</button>
+        </div>
+    </div>
+
+    <script>
+        function showInfo(title, text) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-text').textContent = text;
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        document.getElementById('searchInput').addEventListener('input', filterCards);
+        document.getElementById('filterSelect').addEventListener('change', filterCards);
+
+        function filterCards() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filterValue = document.getElementById('filterSelect').value;
+            const cards = document.querySelectorAll('.card');
+
+            cards.forEach(card => {
+                const name = card.querySelector('p').textContent.toLowerCase();
+                // Используем alt-атрибут изображения для определения категории
+                const category = card.querySelector('img').alt.toLowerCase();
+
+                let matchesSearch = name.includes(searchTerm) || category.includes(searchTerm);
+                let matchesFilter = true;
+
+                if (filterValue === 'orchid') {
+                    matchesFilter = category.includes('орхидея');
+                } else if (filterValue === 'succulent') {
+                    matchesFilter = category.includes('алоэ');
+                } else if (filterValue === 'herb') {
+                    matchesFilter = category.includes('розмарин');
+                } else if (filterValue === 'cactus') {
+                    matchesFilter = category.includes('кактус');
+                } else if (filterValue === 'fruit') {
+                    matchesFilter = category.includes('манго');
+                } else if (filterValue === 'vegetable') {
+                    matchesFilter = category.includes('помидор') || category.includes('лук') || category.includes('перец') || category.includes('овощ');
+                } else if (filterValue === 'garden') {
+                    matchesFilter = category.includes('помидор') || category.includes('лук') || category.includes('перец') || category.includes('овощ') || category.includes('ягода') || category.includes('корнеплод') || category.includes('бобовые');
+                } else if (filterValue === 'indoor') {
+                    matchesFilter = category.includes('орхидея') || category.includes('алоэ') || category.includes('кактус') || category.includes('трава');
+                } else if (filterValue === 'mixed') {
+                    matchesFilter = category.includes('розмарин'); // Пример универсального растения
+                } else if (filterValue === 'berry') {
+                    matchesFilter = category.includes('ягода');
+                } else if (filterValue === 'tree') {
+                     matchesFilter = category.includes('манго') || category.includes('цитрус');
+                } else if (filterValue === 'root') {
+                     matchesFilter = category.includes('корнеплод') || category.includes('луковичные');
+                } else if (filterValue === 'legume') {
+                     matchesFilter = category.includes('бобовые');
+                } else if (filterValue === 'citrus') {
+                     matchesFilter = category.includes('цитрус');
+                } else if (filterValue === 'grass') {
+                     matchesFilter = category.includes('трава');
+                } else if (filterValue === 'medicinal') {
+                     matchesFilter = category.includes('череда') || category.includes('алоэ') || category.includes('мята');
+                } else if (filterValue === 'aromatic') {
+                     matchesFilter = category.includes('розмарин') || category.includes('базилик') || category.includes('мята');
+                } // Добавьте другие условия фильтрации по мере необходимости
+
+                card.style.display = (matchesSearch && matchesFilter) ? 'block' : 'none';
+            });
+        }
+    </script>
 </body>
 </html>
